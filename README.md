@@ -3,6 +3,7 @@
 ## Quick Start
 ### Live Site
 View the EduSketch site live [here](https://edusketch-bebb4.web.app/).
+(automatically deployed after each PR is merged to main)
 
 ### How to run app locally
 - Clone repo 
