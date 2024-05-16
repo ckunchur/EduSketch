@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { prompt} from './prompts';
 
-const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
+const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
 
 
 const client = axios.create({
