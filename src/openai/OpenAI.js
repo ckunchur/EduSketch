@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { prompt} from './prompts';
+import { prompt, top_moods_topics_prompt} from './prompts';
 
 const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
 
