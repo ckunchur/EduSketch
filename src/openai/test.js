@@ -26,7 +26,7 @@ const testImageGen = async () => {
     const captionsResult = await simplifyTopicsWithChatGPT(text, num_captions);
     if (captionsResult.success) {
       const captions = captionsResult.data;
-      const result = await imageGenApiCall(captions, num_captions);
+      const result = await imageGenApiCall(captions);
       console.log(result);
     } else {
       console.log('Error in simplifyTopicsWithChatGPT:', captionsResult.msg);
@@ -36,5 +36,5 @@ const testImageGen = async () => {
   // Run tests
   (async () => {
     await testSimplifyTopics();
-    // await testImageGen();
+    await testImageGen();
   })();

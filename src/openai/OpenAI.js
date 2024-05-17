@@ -17,6 +17,7 @@ const client = axios.create({
 
 
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
+const dalleUrl = 'https://api.openai.com/v1/images/generations';
 
 const parseResponse = (response) => {
     return response.split('\n').map(line => line.replace(/^- /, '').trim()).filter(line => line.length > 0);
@@ -61,21 +62,27 @@ export const simplifyTopicsWithChatGPT = async (text, num_captions) => {
     }
   };
   
-  // sample prompt for chat conversation
-  export const imageGenApiCall = async (captions, num_captions) => {
-    try {
-      const response = await client.post('https://api.openai.com/v1/images/generations', {
+// sample prompt for chat conversation
+export const imageGenApiCall = async (captions) => {
+    const imageUrls = [];
+    
+    for (const caption of captions) {
+      const requestData = {
         model: "dall-e-3",
-        prompt: `Please generate an image for each caption: ${captions.join(', ')}`,
-        n: num_captions,
+        prompt: `Please generate an image for the caption: ${caption}`,
+        n: 1,
         size: "1024x1024"
-      });
+      };
   
-      const image_url = response.data.data[0].url;
-      console.log(image_url);
-      return { success: true, data: image_url };
-    } catch (err) {
-      console.log('error: ', err);
-      return { success: false, msg: err.message };
+      try {
+        const res = await client.post(dalleUrl, requestData);
+        const imageUrl = res.data.data[0].url;
+        imageUrls.push(imageUrl);
+      } catch (err) {
+        console.log('error: ', err.response ? err.response.data : err.message);
+        return { success: false, msg: err.message };
+      }
     }
+  
+    return { success: true, data: imageUrls };
   };
