@@ -1,4 +1,4 @@
-import { simplifyTopicsWithChatGPT, imageGenApiCall} from './OpenAI';
+import { simplifyTopicsWithChatGPT, imageGenApiCall} from './OpenAI.js';
 
 // Test simplifyTopicsWithChatGPT
 const testSimplifyTopics = async () => {
@@ -20,17 +20,21 @@ const testSimplifyTopics = async () => {
 
 // Test imageGenApiCall
 const testImageGen = async () => {
-    const captions = await simplifyTopicsWithChatGPT(text, num_captions);
-    console.log(result);
-    // const captions = ["Caption 1", "Caption 2", "Caption 3"];
+    const text = "Reading Selections Early Settlers in North America...";
     const num_captions = 8;
-
-    const result = await imageGenApiCall(captions, num_captions);
-    console.log(result);
-};
-
-// Run tests
-(async () => {
+  
+    const captionsResult = await simplifyTopicsWithChatGPT(text, num_captions);
+    if (captionsResult.success) {
+      const captions = captionsResult.data;
+      const result = await imageGenApiCall(captions, num_captions);
+      console.log(result);
+    } else {
+      console.log('Error in simplifyTopicsWithChatGPT:', captionsResult.msg);
+    }
+  };
+  
+  // Run tests
+  (async () => {
     await testSimplifyTopics();
     // await testImageGen();
-})();
+  })();
