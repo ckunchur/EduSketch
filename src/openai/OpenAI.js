@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { prompt, top_moods_topics_prompt, simplify_prompt} from './prompts.js';
+import { prompt, top_moods_topics_prompt, simplify_prompt, complex_prompt} from './prompts.js';
 
 const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
 
@@ -61,15 +61,51 @@ export const simplifyTopicsWithChatGPT = async (text, num_captions) => {
       return Promise.resolve({ success: false, msg: err.message });
     }
   };
+
+  // example prompt for semantic mood/topic analysis from a text input
+export const getComplexInfoFromTopic = async (text, captions) => {
+    let prompt = complex_prompt + "Captions:" + String(captions) + "Reading Context: " + text
+    try {
+      const res = await client.post(chatgptUrl, {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: 'system',
+            content: prompt
+          },
+          {
+            role: 'user',
+            content: text
+          }
+        ]
+      });
+  
+      console.log('Response from OpenAI:', res.data);  // Debug line to inspect the response
+  
+      let answerString = res.data.choices[0].message.content.trim();
+      let imageCaptions;
+      try {
+        imageCaptions = parseResponse(answerString);
+      } catch (jsonError) {
+        console.log('Invalid response:', jsonError);
+        return Promise.resolve({ success: false, msg: 'Invalid response from OpenAI' });
+      }
+  
+      return Promise.resolve({ success: true, data: imageCaptions });
+    } catch (err) {
+      console.log('error: ', err);
+      return Promise.resolve({ success: false, msg: err.message });
+    }
+  };
   
 // sample prompt for chat conversation
-export const imageGenApiCall = async (captions) => {
+export const imageGenApiCall = async (captions, style) => {
     const imageUrls = [];
     
     for (const caption of captions) {
       const requestData = {
         model: "dall-e-3",
-        prompt: `Please generate an image for the caption: ${caption}`,
+        prompt: `Please generate an image in the style of ${style} for the caption: ${caption}`,
         n: 1,
         size: "1024x1024"
       };
