@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { prompt, top_moods_topics_prompt, simplify_prompt, complex_prompt} from './prompts.js';
+import { simplify_prompt, complex_prompt} from './prompts.js';
+import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
+import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
 const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
-
-console.log('OpenAI API Key:', OPENAI_API_KEY);
-
-
+const NUM_CAPTIONS = 8
 
 const client = axios.create({
   baseURL: 'https://api.openai.com/v1',
@@ -15,13 +14,34 @@ const client = axios.create({
   }
 });
 
-
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
 const dalleUrl = 'https://api.openai.com/v1/images/generations';
 
 const parseResponse = (response) => {
-    return response.split('\n').map(line => line.replace(/^- /, '').trim()).filter(line => line.length > 0);
-  };
+  return response.split('\n').map(line => line.replace(/^- /, '').trim()).filter(line => line.length > 0);
+};
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+export const getTextFromPDF = async (file) => {
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let textContent = '';
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContentPage = await page.getTextContent();
+      const pageText = textContentPage.items.map(item => item.str).join(' ');
+      textContent += pageText + ' ';
+    }
+
+    return { success: true, text: textContent };
+  } catch (error) {
+    console.error('Error parsing PDF:', error);
+    return { success: false, msg: error.message };
+  }
+};
 
 // example prompt for semantic mood/topic analysis from a text input
 export const simplifyTopicsWithChatGPT = async (text, num_captions) => {
