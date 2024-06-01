@@ -12,28 +12,32 @@ export default function Home() {
 
 
     return (
-        <Stack  sx={{ marginTop: 4, }}>
-            <Typography variant="h3">
+        <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
+            <Typography variant="h4">
                 Turn learning into an adventure
             </Typography>
             <Typography variant="h6">
                 Create custom storyboards from educational content.
             </Typography>
-            <img src={'home-screen-image.png'} alt="home screen image showing history text book, blue mouse, and storyboard" />
+            <Box sx={{ width: '80%' }}>
+
+            
+            <img src={'home-screen-image.png'}  style={{ width: '80%', height: 'auto' }} alt="home screen image showing history text book, blue mouse, and storyboard" />
+            </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={navigateToUploadFile}
-                    style={{
-                        color: 'white',
-                        backgroundColor: 'black',
-                        fontSize: '25px',
-                        textTransform: 'none',
-                        fontWeight: "bold",
-                        borderRadius: '50px' // or any desired value
-                    }}
-                >
+            <Button
+            variant="contained"
+            onClick={navigateToUploadFile}
+            sx={{
+              color: 'white',
+              width: '200px',
+              backgroundColor: 'black',
+              borderRadius: '20px',
+              textTransform: 'none',
+              fontSize: '16px',
+
+            }}
+          >
                     Get Started
                 </Button>
             </Box>

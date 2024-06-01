@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Box, Card, CardActions, IconButton, Stack, Typography } from '@mui/material';
+import { Link, Button, Box, Card, CardActions, IconButton, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import FileUpload from './FileUpload';
+import FileUpload from './FileUploadHelper';
 export default function UploadFile() {
 
 
@@ -14,31 +14,23 @@ export default function UploadFile() {
     return (
         <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
             <Typography variant="h4" fontWeight="bold" mb={2}>
-                Choose your content!
+                Let's get started!
             </Typography>
             <Typography variant="h6" mb={2}>
-              Upload a file or input text to create a storyboard from.
+                Upload a file or input some text to begin creating your storyboard.
             </Typography>
-         
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <img src='loading-bar-1.png' alt="loading bar on step 1" style={{ width: '60%' }} />
 
-           <FileUpload ></FileUpload>
 
-           </Box>
-           
-                
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: 16,
-                    left: 16,
-                    width: '20%', // Adjust the width to scale the image
-                    height: 'auto' // Maintain aspect ratio
-                }}
-            >
-                <img src={'eddy.png'} alt="image of blue cartoon mouse in bottom left of screen" style={{ width: '100%' }} />
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '80%' }}>
+
+                <FileUpload ></FileUpload>
+
             </Box>
            
+
+
+            
 
         </Stack>
 

@@ -1,5 +1,3 @@
-export const prompt = ""
-export const top_moods_topics_prompt = "You will be given text from a journal entry. Based on the tone and topic of the content, perform 2 tasks: first, return 3 single word moods that are most prominent. Examples include stressed, anxious, nervous, grateful, ashamed, tired, etc. Second, return 3 topic words that are most prominent. Examples include school, family, work, sleep, procrastination, etc. Return as json of form: [moods: [], topics: []]. Make sure the first letter of the individual words is capitalized. If there is not enough text to determine the moods or topics, return an empty string.";
 export const simplify_prompt = "Please create a list of captions that create a story that is a summary of the text given. The output should be a bulleted list of the captions. The number of captions you generate is: "
 export const complex_prompt = "I'm giving you text captions and the story the captions were generated from. For each caption, I need in depth 2-3 concise sentences from the reading based on the shorter caption's content."
 export const comic = "comic-book"
