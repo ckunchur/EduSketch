@@ -43,6 +43,11 @@ export default function GridView() {
     let navigate = useNavigate();
     const navigateToHome = () => {
         navigate('/');
+    };
+  
+
+    const navigateToSlideView = () => {
+        navigate('/slide', { state: { imageArray: imageArray} });
       };
 
     return (
@@ -53,23 +58,24 @@ export default function GridView() {
             <Box sx={{ display: 'flex' }}>
                 {/* Left Column Buttons */}
                 <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8 }}>
-                  
-                        <Button 
-                        variant="contained" 
+
+                    <Button
+                        variant="contained"
+                        onClick={navigateToSlideView}
                         sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
-                            <AirplayIcon sx={{ marginRight: '12px' }} /> Slideshow
-                        </Button>
-         
+                        <AirplayIcon sx={{ marginRight: '12px' }} /> Slideshow
+                    </Button>
+
                     <Button variant="contained" sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
                         <DownloadIcon sx={{ marginRight: '12px' }} /> Download
                     </Button>
-                    <Button 
-                    onClick={navigateToHome}
-                    variant="contained" 
-                    sx={{
-                        color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px', whiteSpace: 'nowrap', // Prevent text wrapping
-                        width: '160px'
-                    }}>
+                    <Button
+                        onClick={navigateToHome}
+                        variant="contained"
+                        sx={{
+                            color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px', whiteSpace: 'nowrap', // Prevent text wrapping
+                            width: '160px'
+                        }}>
                         <RefreshIcon sx={{ marginRight: '12px' }} /> Create New
                     </Button>
                 </Stack>

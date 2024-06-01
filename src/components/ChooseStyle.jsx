@@ -16,6 +16,8 @@ export default function ChooseStyle() {
     const navigateToGrid = () => {
         navigate('/grid', { state: { text: text, artDescription: description } });
       };
+    
+      
       const handleBackClick = () => {
         navigate(-1); // Go back to the previous page
       };

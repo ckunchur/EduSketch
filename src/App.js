@@ -6,6 +6,8 @@ import UploadFile from './components/UploadFile.jsx';
 import ChooseStyle from './components/ChooseStyle.jsx';
 import TextEntry from './components/TextEntry.jsx';
 import GridView from './components/GridView.jsx';
+import SlideView from './components/SlideView.jsx';
+
 function App() {
   return (
     <div className="App">
@@ -18,6 +20,8 @@ function App() {
 
           <Route exact path="/style" element={<ChooseStyle />} />
           <Route exact path="/grid" element={<GridView />} />
+          <Route exact path="/slide" element={<SlideView />} />
+
 
         </Routes>
       </Router>
