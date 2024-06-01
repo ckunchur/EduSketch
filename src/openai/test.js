@@ -1,4 +1,4 @@
-import { simplifyTopicsWithChatGPT, imageGenApiCall} from './OpenAI.js';
+import { simplifyTopicsWithChatGPT, imageGenApiCall, getComplexInfoFromTopic} from './OpenAI.js';
 
 // Test simplifyTopicsWithChatGPT
 const testSimplifyTopics = async () => {
@@ -26,6 +26,8 @@ const testImageGen = async () => {
     const captionsResult = await simplifyTopicsWithChatGPT(text, num_captions);
     if (captionsResult.success) {
       const captions = captionsResult.data;
+      const complex = await getComplexInfoFromTopic(text, captions)
+      console.log(complex);
       const result = await imageGenApiCall(captions);
       console.log(result);
     } else {

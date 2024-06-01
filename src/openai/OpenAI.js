@@ -21,6 +21,26 @@ const parseResponse = (response) => {
   return response.split('\n').map(line => line.replace(/^- /, '').trim()).filter(line => line.length > 0);
 };
 
+const parseComplexResponse = (response) => {
+  const regex = /^\d+\.\s*/;  // Regex to match leading numbers and periods
+  let lines = response.split('\n')
+    .map(line => line.replace(regex, '').trim())
+    .filter(line => line.length > 0);
+
+  if (lines.length > 8) {
+    lines = lines.slice(0, 8);
+  } else if (lines.length < 8) {
+    // If less than 8 items, repeat or extend the last item
+    const lastItem = lines[lines.length - 1];
+    while (lines.length < 8) {
+      lines.push(lastItem);
+    }
+  }
+
+  return lines;
+};
+
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export const getTextFromPDF = async (file) => {
@@ -105,7 +125,7 @@ export const getComplexInfoFromTopic = async (text, captions) => {
       let answerString = res.data.choices[0].message.content.trim();
       let imageCaptions;
       try {
-        imageCaptions = parseResponse(answerString);
+        imageCaptions = parseComplexResponse(answerString);
       } catch (jsonError) {
         console.log('Invalid response:', jsonError);
         return Promise.resolve({ success: false, msg: 'Invalid response from OpenAI' });
