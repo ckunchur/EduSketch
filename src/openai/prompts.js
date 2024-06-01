@@ -1,3 +1,2 @@
 export const simplify_prompt = "Please create a list of captions that create a story that is a summary of the text given. The output should be a bulleted list of the captions. The number of captions you generate is: "
-export const complex_prompt = "I'm giving you text captions and the story the captions were generated from. For each caption, I need in depth 2-3 concise sentences from the reading based on the shorter caption's content."
-export const comic = "comic-book"
+export const complex_prompt = "I'm giving you 8 text captions and the story the captions were generated from. For each caption, I need an in depth 2-3 longer version of the caption grounded from info from the reading based on the shorter caption's content."

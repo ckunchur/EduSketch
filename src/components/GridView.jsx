@@ -1,38 +1,62 @@
-import { React, useState } from 'react';
-import { Grid, Card, CardContent, Link, CardMedia, Typography, Box, Stack, Button } from '@mui/material';
-import AirplayIcon from '@mui/icons-material/Airplay'; import DownloadIcon from '@mui/icons-material/Download';
+import { React, useState, useEffect } from 'react';
+import { Grid, Card, CardContent, CardMedia, Typography, Box, Stack, Button } from '@mui/material';
+import AirplayIcon from '@mui/icons-material/Airplay';
+import DownloadIcon from '@mui/icons-material/Download';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { simplifyTopicsWithChatGPT, getComplexInfoFromTopic, imageGenApiCall } from '../openai/OpenAI';
 
 export default function GridView() {
-
     const location = useLocation();
     const { text, artDescription } = location.state || { text: '', artDescription: '' };
-    const { generatedImageObjects, setImageObjects } = useState(null);
+    const [imageObjects, setImageObjects] = useState([]);
+    const [flipped, setFlipped] = useState([]);
+    const [dataFetched, setDataFetched] = useState(false);
 
-    // TO DO: pass in text and art description into gpt call and setImageObjects
-    // returned gpt output should be in the format of imageArray below 
+    useEffect(() => {
+        if (!dataFetched) {
+            const fetchData = async () => {
+                try {
+                    console.log("Text:", text);
+                    console.log("Art Style Description:", artDescription);
 
+                    // Get initial captions
+                    const captionsResponse = await simplifyTopicsWithChatGPT(text, 8);
+                    if (!captionsResponse.success) throw new Error(captionsResponse.msg);
 
-    // placeholder, delete and use generatedImages when gpt function working
-    const imageArray = [
-        { src: 'test-image.png', caption: 'Ancient people migrated from Asia, traveling across the Bering Strait.', longerCaption: 'Thousands of years ago, ancient people migrated from Asia into North America by crossing a land bridge that once spanned what is now the Bering Strait. This migration allowed them to spread throughout North and South America, carrying their cultures and adapting to new environments.' },
-        { src: 'test-image.png', caption: 'Indigenous peoples across North America adapted to their environments.', longerCaption: 'Indigenous peoples, descended from early Asian migrants, adapted to various environments across North America. For example, tribes in the Great Plains relied on buffalo for sustenance, while those in the Arctic depended on ice, seals, and whales for survival.' },
-        { src: 'test-image.png', caption: 'In the 1500s, Spanish explorers reintroduced horses to North America.', longerCaption: 'The reintroduction of horses by Spanish explorers in the 1500s transformed many Indigenous cultures in North America. Horses enhanced mobility, allowing tribes to travel long distances quickly, carry supplies, and hunt more effectively.' },
-        { src: 'test-image.png', caption: 'Around 1,000 years ago, Vikings led by Leif Erickson arrived in North America.', longerCaption: 'Approximately 1,000 years ago, Viking explorers led by Leif Erickson reached North America, where they established a temporary settlement known as Vinland. This camp, located on Newfoundland, was notable for its grapevines, which inspired its name.' },
-        { src: 'test-image.png', caption: 'During the Crusades, Europeans discovered and marveled at exotic goods.', longerCaption: 'The Crusades, fought between 1100 and 1300, exposed Europeans to exotic goods and cultures from the Middle East and Asia. This exposure ignited a desire for exploration and trade, eventually leading to the Age of Exploration.' },
-        { src: 'test-image.png', caption: 'Early European explorers ventured into unknown waters.', longerCaption: 'Early European explorers navigated uncharted seas using the stars and basic tools such as the compass and cross-staff. These primitive navigation aids helped them determine direction and latitude, though they still faced many perils at sea.' },
-        { src: 'test-image.png', caption: 'The Age of Exploration marked the expansion of European influence.', longerCaption: 'Throughout the Age of Exploration, cartographers used the information collected by explorers to create more accurate maps of the world, facilitating further exploration and expansion of European influence.' },
-        { src: 'test-image.png', caption: 'Global trade routes established during this period connected continents.', longerCaption: 'In contemporary times, students utilize advanced technologies such as GPS to learn about the historical impact of global trade routes established during the Age of Exploration, which connected continents and facilitated cultural exchange.' },
-    ];
+                    const initialCaptions = captionsResponse.data;
+                    console.log("Initial Captions:", initialCaptions);
 
+                    // Get complex captions
+                    const complexInfoResponse = await getComplexInfoFromTopic(text, initialCaptions);
+                    if (!complexInfoResponse.success) throw new Error(complexInfoResponse.msg);
 
+                    const complexCaptions = complexInfoResponse.data;
+                    console.log("Complex Captions:", complexCaptions);
 
+                    // Generate images
+                    const imageResponse = await imageGenApiCall(initialCaptions, artDescription);
+                    if (!imageResponse.success) throw new Error(imageResponse.msg);
 
+                    const images = imageResponse.data.map((src, index) => ({
+                        src,
+                        caption: initialCaptions[index],
+                        longerCaption: complexCaptions[index]
+                    }));
+                    console.log("Generated Images:", images);
 
-    const [flipped, setFlipped] = useState(Array(imageArray.length).fill(false));
+                    setImageObjects(images);
+                    setFlipped(Array(images.length).fill(false));
+                    setDataFetched(true);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            };
+
+            fetchData();
+        }
+    }, [text, artDescription, dataFetched]);
 
     const handleFlip = (index) => {
         const newFlipped = [...flipped];
@@ -44,11 +68,10 @@ export default function GridView() {
     const navigateToHome = () => {
         navigate('/');
     };
-  
 
     const navigateToSlideView = () => {
-        navigate('/slide', { state: { imageArray: imageArray} });
-      };
+        navigate('/slide', { state: { imageArray: imageObjects } });
+    };
 
     return (
         <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
@@ -58,14 +81,12 @@ export default function GridView() {
             <Box sx={{ display: 'flex' }}>
                 {/* Left Column Buttons */}
                 <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8 }}>
-
                     <Button
                         variant="contained"
                         onClick={navigateToSlideView}
                         sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
                         <AirplayIcon sx={{ marginRight: '12px' }} /> Slideshow
                     </Button>
-
                     <Button variant="contained" sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
                         <DownloadIcon sx={{ marginRight: '12px' }} /> Download
                     </Button>
@@ -83,7 +104,7 @@ export default function GridView() {
                 {/* Image Grid */}
                 <Box sx={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '80vh', marginRight: '12px' }}>
                     <Grid container spacing={2}>
-                        {imageArray.map((image, index) => (
+                        {imageObjects.map((image, index) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                                 <Card
                                     sx={{ position: 'relative', borderRadius: '16px', marginBottom: '8px', cursor: 'pointer' }}
@@ -94,7 +115,7 @@ export default function GridView() {
                                     </Box>
                                     {flipped[index] ? (
                                         <CardContent >
-                                            <LightbulbCircleIcon></LightbulbCircleIcon>
+                                            <LightbulbCircleIcon />
                                             <Typography variant="body2" color="textSecondary" sx={{ padding: '4px' }}>
                                                 {image.longerCaption}
                                             </Typography>
@@ -108,13 +129,12 @@ export default function GridView() {
                                                 alt={image.caption}
                                             />
                                             <CardContent>
-                                                <Typography variant="body2" color="textSecondary" >
+                                                <Typography variant="body2" color="textSecondary">
                                                     {image.caption}
                                                 </Typography>
                                             </CardContent>
                                         </>
                                     )}
-
                                 </Card>
                             </Grid>
                         ))}
@@ -132,8 +152,6 @@ export default function GridView() {
             >
                 <img src={'mouse-speech-bubble.png'} alt="image of blue cartoon mouse in bottom left of screen" style={{ marginLeft: '8px', width: '100%' }} />
             </Box>
-
-
         </Stack>
     );
 }

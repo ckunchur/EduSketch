@@ -45,7 +45,7 @@ export const getTextFromPDF = async (file) => {
 
 // example prompt for semantic mood/topic analysis from a text input
 export const simplifyTopicsWithChatGPT = async (text, num_captions) => {
-    let prompt = simplify_prompt + String(num_captions) + "Context: " + text;
+    let prompt = simplify_prompt + String(NUM_CAPTIONS) + "Context: " + text;
     try {
       const res = await client.post(chatgptUrl, {
         model: "gpt-3.5-turbo",
