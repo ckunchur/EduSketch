@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { captions_json_prompt } from './prompts.js';
+import { captions_json_prompt, intro_prompt } from './prompts.js';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
 import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
@@ -39,11 +39,11 @@ export const getTextFromPDF = async (file) => {
   }
 };
 
-export const simplifyTopicsWithChatGPT = async (text) => {
-  let prompt = captions_json_prompt + "Context:" + text;
+export const simplifyTopicsWithChatGPT = async (text, grade_level) => {
+  let prompt = intro_prompt + `The captions should be at a ${grade_level} grade reading level.` + captions_json_prompt + "Context:" + text;
   try {
     const res = await client.post(chatgptUrl, {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       messages: [
         {
           role: 'system',
@@ -58,7 +58,9 @@ export const simplifyTopicsWithChatGPT = async (text) => {
 
     let answerString = res.data.choices[0].message.content.trim();
     let imageCaptions;
+    
     try {
+      console.log(answerString)
       imageCaptions = JSON.parse(answerString);
     } catch (jsonError) {
       console.log('Invalid response:', jsonError);
