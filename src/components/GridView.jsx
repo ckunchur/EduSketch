@@ -6,7 +6,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { simplifyTopicsWithChatGPT, getComplexInfoFromTopic, imageGenApiCall } from '../openai/OpenAI';
-
+import LoadingScreen from './LoadingScreen';
 export default function GridView() {
     const location = useLocation();
     const { text, artDescription } = location.state || { text: '', artDescription: '' };
@@ -15,11 +15,13 @@ export default function GridView() {
     const [dataFetched, setDataFetched] = useState(false);
 
     useEffect(() => {
-        if (!dataFetched) {
+        if (!dataFetched || imageObjects.length === 0) {
             const fetchData = async () => {
                 try {
                     console.log("Text:", text);
                     console.log("Art Style Description:", artDescription);
+                    console.log("dataFetched", dataFetched);
+
 
                     // Get initial captions
                     const captionsResponse = await simplifyTopicsWithChatGPT(text, 8);
@@ -74,84 +76,161 @@ export default function GridView() {
     };
 
     return (
-        <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
-            <Typography variant="h4" fontWeight="bold" mb={2}>
+        <div>
+          {!dataFetched ? (
+            <LoadingScreen />
+          ) : (
+            <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
+              <Typography variant="h4" fontWeight="bold" mb={2}>
                 Your Storyboard
-            </Typography>
-            <Box sx={{ display: 'flex' }}>
+              </Typography>
+              <Box sx={{ display: 'flex' }}>
                 {/* Left Column Buttons */}
                 <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8 }}>
-                    <Button
-                        variant="contained"
-                        onClick={navigateToSlideView}
-                        sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
-                        <AirplayIcon sx={{ marginRight: '12px' }} /> Slideshow
-                    </Button>
-                    <Button variant="contained" sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
-                        <DownloadIcon sx={{ marginRight: '12px' }} /> Download
-                    </Button>
-                    <Button
-                        onClick={navigateToHome}
-                        variant="contained"
-                        sx={{
-                            color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px', whiteSpace: 'nowrap', // Prevent text wrapping
-                            width: '160px'
-                        }}>
-                        <RefreshIcon sx={{ marginRight: '12px' }} /> Create New
-                    </Button>
+                  <Button
+                    variant="contained"
+                    onClick={navigateToSlideView}
+                    sx={{
+                      color: 'white',
+                      backgroundColor: 'black',
+                      borderRadius: '20px',
+                      textTransform: 'none',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <AirplayIcon sx={{ marginRight: '12px' }} /> Slideshow
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: 'white',
+                      backgroundColor: 'black',
+                      borderRadius: '20px',
+                      textTransform: 'none',
+                      fontSize: '14px'
+                    }}
+                  >
+                    <DownloadIcon sx={{ marginRight: '12px' }} /> Download
+                  </Button>
+                  <Button
+                    onClick={navigateToHome}
+                    variant="contained"
+                    sx={{
+                      color: 'white',
+                      backgroundColor: 'black',
+                      borderRadius: '20px',
+                      textTransform: 'none',
+                      fontSize: '14px',
+                      whiteSpace: 'nowrap', // Prevent text wrapping
+                      width: '160px'
+                    }}
+                  >
+                    <RefreshIcon sx={{ marginRight: '12px' }} /> Create New
+                  </Button>
                 </Stack>
-
+      
                 {/* Image Grid */}
                 <Box sx={{ flexGrow: 1, overflowY: 'scroll', maxHeight: '80vh', marginRight: '12px' }}>
-                    <Grid container spacing={2}>
-                        {imageObjects.map((image, index) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                                <Card
-                                    sx={{ position: 'relative', borderRadius: '16px', marginBottom: '8px', cursor: 'pointer' }}
-                                    onClick={() => handleFlip(index)}
-                                >
-                                    <Box sx={{ position: 'absolute', top: 4, left: 4, backgroundColor: 'black', color: 'white', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <Typography variant="caption">{index + 1}</Typography>
-                                    </Box>
-                                    {flipped[index] ? (
-                                        <CardContent >
-                                            <LightbulbCircleIcon />
-                                            <Typography variant="body2" color="textSecondary" sx={{ padding: '4px' }}>
-                                                {image.longerCaption}
-                                            </Typography>
-                                        </CardContent>
-                                    ) : (
-                                        <>
-                                            <CardMedia
-                                                component="img"
-                                                height="140"
-                                                image={image.src}
-                                                alt={image.caption}
-                                            />
-                                            <CardContent>
-                                                <Typography variant="body2" color="textSecondary">
-                                                    {image.caption}
-                                                </Typography>
-                                            </CardContent>
-                                        </>
-                                    )}
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
-            </Box>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: 16,
-                    left: 0,
-                    width: '20%', // Adjust the width to scale the image
-                    height: 'auto' // Maintain aspect ratio
-                }}
+                <Grid container spacing={2}>
+  {imageObjects.map((image, index) => (
+    <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+      <Card
+        sx={{
+          position: 'relative',
+          borderRadius: '16px',
+          marginBottom: '8px',
+          cursor: 'pointer',
+          height: '300px', // Set a fixed height for the card
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+        onClick={() => handleFlip(index)}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 4,
+            left: 4,
+            backgroundColor: 'black',
+            color: 'white',
+            borderRadius: '50%',
+            width: '24px',
+            height: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <Typography variant="caption">{index + 1}</Typography>
+        </Box>
+        {flipped[index] ? (
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: '1 0 auto', // Ensure it takes up available space
+              textAlign: 'center',
+            }}
+          >
+            <LightbulbCircleIcon />
+            <Typography variant="body2" color="textSecondary" sx={{ padding: '4px' }}>
+              {image.longerCaption}
+            </Typography>
+          </CardContent>
+        ) : (
+          <>
+            <CardMedia
+              component="img"
+              height="180"
+              image={image.src}
+              alt={image.caption}
+              sx={{
+                flexShrink: 0, // Prevent the image from shrinking
+              }}
+            />
+            <CardContent
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: '1 0 auto', // Ensure it takes up available space
+                textAlign: 'center',
+              }}
             >
-                <img src={'mouse-speech-bubble.png'} alt="image of blue cartoon mouse in bottom left of screen" style={{ marginLeft: '8px', width: '100%' }} />
-            </Box>
-        </Stack>
-    );
-}
+              <Typography variant="body2" color="textSecondary">
+                {image.caption}
+              </Typography>
+            </CardContent>
+          </>
+        )}
+      </Card>
+    </Grid>
+  ))}
+</Grid>
+
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 16,
+                  left: 0,
+                  width: '20%', // Adjust the width to scale the image
+                  height: 'auto' // Maintain aspect ratio
+                }}
+              >
+                <img
+                  src={'mouse-speech-bubble.png'}
+                  alt="image of blue cartoon mouse in bottom left of screen"
+                  style={{ marginLeft: '8px', width: '100%' }}
+                />
+              </Box>
+            </Stack>
+          )}
+        </div>
+      );
+      }

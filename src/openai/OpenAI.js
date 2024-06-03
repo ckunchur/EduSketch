@@ -3,7 +3,9 @@ import { simplify_prompt, complex_prompt} from './prompts.js';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
 import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
-const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
+// const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
+const OPENAI_API_KEY = "sk-proj-q8taqJvSjo1yechfuIFOT3BlbkFJPKjowFC8Wv7hOpicv4gL"
+
 const NUM_CAPTIONS = 8
 
 const client = axios.create({

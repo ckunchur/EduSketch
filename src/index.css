@@ -11,3 +11,41 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@keyframes pacman-move {
+  0% { left: 0; }
+  100% { left: calc(100% - 40px); }
+}
+
+.pacman {
+  position: absolute;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-right: 40px solid transparent;
+  border-top: 40px solid yellow;
+  border-left: 40px solid yellow;
+  border-bottom: 40px solid yellow;
+  border-radius: 40px;
+  animation: pacman-move 4s linear infinite;
+}
+
+.dots-container {
+  position: relative;
+  width: calc(100% - 40px); /* Pac-Man width */
+  height: 40px;
+  margin-left: 40px; /* Pac-Man width */
+}
+
+.dot {
+  position: absolute;
+  top: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: blue;
+  transition: opacity 0.2s;
+}
+
+.dot.hidden {
+  opacity: 0;
+}
