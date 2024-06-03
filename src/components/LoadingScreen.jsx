@@ -12,7 +12,7 @@ export default function LoadingScreen() {
                 Creating Your Storyboard...
             </Typography>
             <Typography variant="h6" mb={2}>
-                Hang tight for a minute!
+                Hang tight for a minute! This will take a little bit of time.
             </Typography>
             <Box
                 sx={{
@@ -27,17 +27,6 @@ export default function LoadingScreen() {
                 }}
             >
                 <Commet color="#46B1FF" size="large" text="" textColor="" />
-            </Box>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: 16,
-                    left: 0,
-                    width: '20%', // Adjust the width to scale the image
-                    height: 'auto' // Maintain aspect ratio
-                }}
-            >
-                <img src={'mouse-speech-bubble.png'} alt="image of blue cartoon mouse in bottom left of screen" style={{ marginLeft: '8px', width: '100%' }} />
             </Box>
         </Stack>
 

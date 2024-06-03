@@ -46,7 +46,7 @@ export default function ChooseStyle() {
 
     let navigate = useNavigate();
     const navigateToGrid = () => {
-        navigate('/grid', { state: { text: text, artDescription: description, readingLevel: readingLevel, numCaptions: numCaptions } });
+        navigate('/board', { state: { text: text, artDescription: description, readingLevel: readingLevel, numCaptions: numCaptions } });
     };
 
     const handleBackClick = () => {

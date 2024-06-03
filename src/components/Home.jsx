@@ -13,11 +13,11 @@ export default function Home() {
 
     return (
         <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
-            <Typography variant="h4">
-                Turn learning into an adventure
+            <Typography variant="h4" fontWeight="bold" >
+                Turn learning into an adventure!
             </Typography>
             <Typography variant="h6">
-                Create custom storyboards from educational content.
+                Create custom educational storyboards for students.
             </Typography>
             <Box sx={{ width: '90%' }}>
 

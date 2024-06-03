@@ -5,8 +5,9 @@ import NavBar from './components/NavBar.jsx';
 import UploadFile from './components/UploadFile.jsx';
 import ChooseStyle from './components/ChooseStyle.jsx';
 import TextEntry from './components/TextEntry.jsx';
-import GridView from './components/GridView.jsx';
-import SlideView from './components/SlideView.jsx';
+// import GridView from './components/GridView.jsx';
+// import SlideView from './components/SlideView.jsx';
+import ViewSwitcher from './components/ViewSwitcher.jsx';
 
 function App() {
   return (
@@ -19,8 +20,7 @@ function App() {
           <Route exact path="/text" element={<TextEntry />} />
 
           <Route exact path="/style" element={<ChooseStyle />} />
-          <Route exact path="/grid" element={<GridView />} />
-          <Route exact path="/slide" element={<SlideView />} />
+          <Route exact path="/board" element={<ViewSwitcher />} />
 
 
         </Routes>
