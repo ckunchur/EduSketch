@@ -7,9 +7,11 @@ import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { simplifyTopicsWithChatGPT, getComplexInfoFromTopic, imageGenApiCall } from '../openai/OpenAI';
 import LoadingScreen from './LoadingScreen';
+
+
 export default function GridView() {
     const location = useLocation();
-    const { text, artDescription } = location.state || { text: '', artDescription: '' };
+    const { text, artDescription, readingLevel, numCaptions } = location.state || { text: '', artDescription: '', readingLevel: 3, numCaptions: 8};
     const [imageObjects, setImageObjects] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [dataFetched, setDataFetched] = useState(false);
@@ -20,6 +22,9 @@ export default function GridView() {
                 try {
                     console.log("Text:", text);
                     console.log("Art Style Description:", artDescription);
+                    console.log("Reading level:", readingLevel);
+                    console.log("Num captions:", numCaptions);
+
                     console.log("dataFetched", dataFetched);
 
                     const captionsResponse = await simplifyTopicsWithChatGPT(text);

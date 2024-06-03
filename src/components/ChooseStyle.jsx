@@ -46,7 +46,7 @@ export default function ChooseStyle() {
 
     let navigate = useNavigate();
     const navigateToGrid = () => {
-        navigate('/grid', { state: { text: text, artDescription: description } });
+        navigate('/grid', { state: { text: text, artDescription: description, readingLevel: readingLevel, numCaptions: numCaptions } });
     };
 
     const handleBackClick = () => {
@@ -143,8 +143,8 @@ export default function ChooseStyle() {
                 </Box>
                 <TextField
                     type="number"
-                    value={readingLevel}
-                    onChange={handleReadingLevelChange}
+                    value={numCaptions}
+                    onChange={handleNumCaptionsChange}
                     inputProps={{ min: 1, max: 8 }}
                     sx={{ width: '30%' }}
                 />
