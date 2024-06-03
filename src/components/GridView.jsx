@@ -22,12 +22,8 @@ export default function GridView() {
                 try {
                     console.log("Text:", text);
                     console.log("Art Style Description:", artDescription);
-                    console.log("Reading level:", readingLevel);
-                    console.log("Num captions:", numCaptions);
 
-                    console.log("dataFetched", dataFetched);
-
-                    const captionsResponse = await simplifyTopicsWithChatGPT(text);
+                    const captionsResponse = await simplifyTopicsWithChatGPT(text, readingLevel, numCaptions);
                     if (!captionsResponse.success) throw new Error(captionsResponse.msg);
 
                     const initialCaptions = captionsResponse.data;

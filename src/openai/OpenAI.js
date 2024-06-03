@@ -40,6 +40,8 @@ export const getTextFromPDF = async (file) => {
 };
 
 export const simplifyTopicsWithChatGPT = async (text, grade_level, num_captions) => {
+  console.log("grade level", grade_level);
+  console.log("num_captions", num_captions);
   let prompt = `Using the passed in text, create a summary that consists of ${num_captions} caption pairs that do a good job of covering the main ideas of the information. The captions should be at a ${grade_level} grade reading level.` + captions_json_prompt + "Context:" + text;
   try {
     const res = await client.post(chatgptUrl, {

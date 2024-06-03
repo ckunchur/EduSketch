@@ -4,7 +4,7 @@ import { Box, Button, Card, CardContent, CardMedia, Stack, Typography } from '@m
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import GridViewIcon from '@mui/icons-material/GridView';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import LightbulbCircleIcon from '@mui/icons-material/LightbulbCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
@@ -37,46 +37,49 @@ export default function SlideView() {
 
   return (
     <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
-      <Typography variant="h6">
+      <Typography variant="h5">
         Part {currentSlide + 1} of {imageArray.length}
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-        <Button onClick={handlePrev} sx={{ position: 'absolute', left: 0, color: 'black', fontSize: '48px' }} disabled={currentSlide === 0}
+        <Button onClick={handlePrev} sx={{ color: 'black', fontSize: '48px' }} disabled={currentSlide === 0}
         >
           <KeyboardArrowLeftIcon fontSize="inherit" />
         </Button>
-
-        <Card sx={{ width: '60%', cursor: 'pointer', minHeight: '400px' }} onClick={handleFlip}>
+        <Card sx={{ cursor: 'pointer', height: '600px', width: '800px' }} onClick={handleFlip}>
           {flipped[currentSlide] ? (
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <LightbulbIcon sx={{ marginBottom: '8px' }} />
-              <Typography variant="body2" color="textSecondary" align="center">
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '95%' }}>
+              <LightbulbCircleIcon sx={{ marginBottom: '8px', fontSize: '48px' }} />
+              <Typography variant="h6" color="textSecondary" align="center" >
                 {imageArray[currentSlide].longerCaption}
               </Typography>
             </CardContent>
           ) : (
             <CardMedia
               component="img"
-              sx={{ height: '400px' }}
+              sx={{ height: '100%', width: '100%' }}
               image={imageArray[currentSlide].src}
               alt={imageArray[currentSlide].caption}
             />
           )}
         </Card>
 
+
         <Button
           onClick={handleNext}
           disabled={currentSlide === imageArray.length - 1}
-          sx={{ position: 'absolute', right: 0, color: 'black', fontSize: '48px' }}>
+          sx={{ color: 'black', fontSize: '48px' }}>
           <KeyboardArrowRightIcon fontSize="inherit" />
         </Button>
       </Box>
-      {!flipped[currentSlide] && (
-        <Typography variant="body2" color="textSecondary" align="center" sx={{ width: '80%', marginTop: 2 }}>
+      {!flipped[currentSlide] ? (
+        <Typography variant="h6" color="textSecondary" align="center" sx={{ width: '80%', marginTop: 2 }}>
           {imageArray[currentSlide].caption}
         </Typography>
-      )}
-      <Button variant="contained" onClick={navigateToGridView} sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '14px' }}>
+      ) :
+        <Typography variant="h6" color="textSecondary" align="center" sx={{ width: '80%', marginTop: 2, color: 'white' }}>
+        </Typography>
+      }
+      <Button variant="contained" onClick={navigateToGridView} sx={{ color: 'white', backgroundColor: 'black', borderRadius: '20px', textTransform: 'none', fontSize: '20px' }}>
         <GridViewIcon /> Switch to Grid View
       </Button>
 
