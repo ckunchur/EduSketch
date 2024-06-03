@@ -1,4 +1,3 @@
-export const intro_prompt = "Using the passed in text, create a summary that consists of 8 caption pairs that do a good job of covering the main ideas of the information."
 export const captions_json_prompt = "Instructions: \
 The caption pairs should have one that is a short single sentence description and the second should be a more detailed 1-2 sentences expand on the first caption. \
 \
