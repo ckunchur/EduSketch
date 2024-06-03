@@ -22,31 +22,19 @@ export default function GridView() {
                     console.log("Art Style Description:", artDescription);
                     console.log("dataFetched", dataFetched);
 
-
-                    // Get initial captions
-                    const captionsResponse = await simplifyTopicsWithChatGPT(text, 8);
+                    const captionsResponse = await simplifyTopicsWithChatGPT(text);
                     if (!captionsResponse.success) throw new Error(captionsResponse.msg);
 
                     const initialCaptions = captionsResponse.data;
-                    console.log("Initial Captions:", initialCaptions);
-
-                    // Get complex captions
-                    const complexInfoResponse = await getComplexInfoFromTopic(text, initialCaptions);
-                    if (!complexInfoResponse.success) throw new Error(complexInfoResponse.msg);
-
-                    const complexCaptions = complexInfoResponse.data;
-                    console.log("Complex Captions:", complexCaptions);
-
-                    // Generate images
+                    
                     const imageResponse = await imageGenApiCall(initialCaptions, artDescription);
                     if (!imageResponse.success) throw new Error(imageResponse.msg);
 
                     const images = imageResponse.data.map((src, index) => ({
                         src,
-                        caption: initialCaptions[index],
-                        longerCaption: complexCaptions[index]
+                        caption: initialCaptions[index].shortCaption,
+                        longerCaption: initialCaptions[index].longCaption
                     }));
-                    console.log("Generated Images:", images);
 
                     setImageObjects(images);
                     setFlipped(Array(images.length).fill(false));
