@@ -30,7 +30,7 @@ export default function SlideView({ imageObjects }) {
   return (
     <div>
       
-      <Box sx={{ position: 'absolute', top: 0, right: 56, padding: '8px' }}>
+      <Box sx={{ position: 'absolute', top: 200, right: 56, padding: '8px' }}>
         <Typography variant="h5">
           Part {currentSlide + 1} of {imageObjects.length}
         </Typography>

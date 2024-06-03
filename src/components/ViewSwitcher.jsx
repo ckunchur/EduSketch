@@ -65,7 +65,10 @@ export default function ViewSwitcher() {
             {/* Left Column Buttons */}
             <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
                 <Typography variant="h4" fontWeight="bold" mb={2}>
-                    Your Storyboard
+                   Welcome to Your Storyboard!
+                </Typography>
+                <Typography variant="h6">
+                   Scroll to view your story below. Click on a picture to learn more! 
                 </Typography>
                 <Box sx={{ display: 'flex' }}>
                 <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8 }}>
