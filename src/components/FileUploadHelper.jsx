@@ -58,7 +58,7 @@ const FileUpload = () => {
             onClick={() => document.getElementById('fileInput').click()}
           >
             <FileUploadIcon sx={{ fontSize: 48, mb: 2 }} />
-            <Typography variant="body1">Choose a file or drag it here</Typography>
+            <Typography variant="body1">Click to upload a file </Typography>
             <input
               id="fileInput"
               type="file"

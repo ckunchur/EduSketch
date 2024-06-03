@@ -1,26 +1,18 @@
-import {React, useState} from 'react';
-import { Button, Box, Card, CardActions, IconButton, Stack, Typography, Link } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Box, Stack, Typography, TextField, Slider, Tooltip, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function ChooseStyle() {
-    const [selectedImage, setSelectedStyle] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null); // Correct variable name for state
     const [description, setDescription] = useState('');
-
+    const [numCaptions, setNumCaptions] = useState(8);
+    const [readingLevel, setReadingLevel] = useState(3);
     const location = useLocation();
-    const { text } = location.state || { text: '' }; 
-
-    let navigate = useNavigate();
-    const navigateToGrid = () => {
-        navigate('/grid', { state: { text: text, artDescription: description } });
-      };
-    
-      
-      const handleBackClick = () => {
-        navigate(-1); // Go back to the previous page
-      };
+    const { text } = location.state || { text: '' };
 
     const images = [
         {
@@ -40,23 +32,58 @@ export default function ChooseStyle() {
         }
     ];
 
+    const readingLevels = [
+        { value: 1, label: '1st' },
+        { value: 2, label: '2nd' },
+        { value: 3, label: '3rd' },
+        { value: 4, label: '4th' },
+        { value: 5, label: '5th' },
+        { value: 6, label: '6th' },
+        { value: 7, label: '7th' },
+        { value: 8, label: '8th' },
+    ];
+
+
+    let navigate = useNavigate();
+    const navigateToGrid = () => {
+        navigate('/grid', { state: { text: text, artDescription: description } });
+    };
+
+    const handleBackClick = () => {
+        navigate(-1); // Go back to the previous page
+    };
+
+
+    function valuetext(value) {
+        return `${value}`;
+    }
+
     const handleClick = (index, description) => {
-        setSelectedStyle(index);
+        setSelectedImage(index); // Use correct state setter
         setDescription(description);
     };
 
+    const handleReadingLevelChange = (event) => {
+        setReadingLevel(event.target.value);
+    };
+
+    const handleNumCaptionsChange = (event) => {
+        setNumCaptions(event.target.value);
+    };
     return (
         <Stack spacing={2} sx={{ marginTop: 4, alignItems: 'center' }}>
             <Typography variant="h4" fontWeight="bold" mb={2}>
-                Choose an art style!
+                Customize your storyboard!
             </Typography>
             <Typography variant="h6" mb={2}>
-            What art style do you want your final story to be in?
-         </Typography>
-         <img src='loading-bar-2.png' alt="loading bar on step 2" style={{ width: '60%' }} />
-
-         <Stack direction="row" spacing={2} justifyContent="center">
-         {images.map((image, index) => (
+                Use the options below to tailor the story to fit your needs.
+            </Typography>
+            <img src='loading-bar-2.png' alt="loading bar on step 2" style={{ width: '60%' }} />
+            <Typography variant="h6" mb={2}>
+                What art style do you want the final story to be in?
+            </Typography>
+            <Stack direction="row" spacing={2} justifyContent="center" paddingBottom="16px">
+                {images.map((image, index) => (
                     <Box
                         key={index}
                         onClick={() => handleClick(index, image.description)}
@@ -84,47 +111,75 @@ export default function ChooseStyle() {
                         )}
                     </Box>
                 ))}
+            </Stack>
+            <Box width="60%">
+                <Typography variant="h6" mb={2}>
+                    What reading level should the story be at?
+                </Typography>
+                <Slider
+                    onChange={handleReadingLevelChange}
+                    value={readingLevel}
+                    aria-label="Restricted values"
+                    defaultValue={3}
+                    getAriaValueText={valuetext}
+                    step={null}
+                    valueLabelDisplay="auto"
+                    marks={readingLevels}
+                    track={false}
+                    min={1}
+                    max={8}
+                />
+            </Box>
+            <Box width="60%" textAlign="center" display="flex" flexDirection="column" alignItems="center">
+                <Box display="flex" alignItems="center" mb={2} justifyContent="center">
+                    <Typography variant="h6" mr={1}>
+                        How many parts should the story be?
+                    </Typography>
+                    <Tooltip title="Recommended 8-10 for ~1 min generation times.">
+                        <IconButton>
+                            <InfoIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+                <TextField
+                    type="number"
+                    value={readingLevel}
+                    onChange={handleReadingLevelChange}
+                    inputProps={{ min: 1, max: 8 }}
+                    sx={{ width: '30%' }}
+                />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '60%', mt: 8 }}>
+                <Button
+                    variant="contained"
+                    onClick={handleBackClick}
+                    sx={{
+                        color: 'white',
+                        width: '200px',
+                        backgroundColor: 'black',
+                        borderRadius: '20px',
+                        textTransform: 'none',
+                        fontSize: '16px',
+                    }}
+                >
+                    <ArrowBackIcon sx={{ marginRight: '12px' }} /> Back
+                </Button>
+                <Button
+                    disabled={selectedImage === null} // Use null check for disabled condition
+                    variant="contained"
+                    onClick={navigateToGrid}
+                    sx={{
+                        color: 'white',
+                        width: '200px',
+                        backgroundColor: 'black',
+                        borderRadius: '20px',
+                        textTransform: 'none',
+                        fontSize: '16px',
+                    }}
+                >
+                    Next
+                </Button>
+            </Box>
         </Stack>
-        {/* {description && <p>{description}</p>} */}
-
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between',  alignItems: 'center', width: '60%', mt: 8 }}>
-         
-         
-        <Button
-            variant="contained"
-            onClick={handleBackClick}
-            sx={{
-              color: 'white',
-              width: '200px',
-              backgroundColor: 'black',
-              borderRadius: '20px',
-              textTransform: 'none',
-              fontSize: '16px',
-
-            }}
-          >
-            <ArrowBackIcon sx={{marginRight: '12px'}}/> Back
-          </Button>
-          <Button
-          disabled={!selectedImage}
-            variant="contained"
-            onClick={navigateToGrid}
-            sx={{
-              color: 'white',
-              width: '200px',
-              backgroundColor: 'black',
-              borderRadius: '20px',
-              textTransform: 'none',
-              fontSize: '16px',
-
-            }}
-          >
-            Next
-          </Button>
-        </Box>
-           
-        </Stack>
-
     );
 }

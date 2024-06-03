@@ -17,7 +17,7 @@ export default function UploadFile() {
                 Let's get started!
             </Typography>
             <Typography variant="h6" mb={2}>
-                Upload a file or input some text to begin creating your storyboard.
+                Upload a PDF or type your own text to begin creating your storyboard.
             </Typography>
             <img src='loading-bar-1.png' alt="loading bar on step 1" style={{ width: '60%' }} />
 

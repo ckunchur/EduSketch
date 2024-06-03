@@ -19,10 +19,10 @@ export default function Home() {
             <Typography variant="h6">
                 Create custom storyboards from educational content.
             </Typography>
-            <Box sx={{ width: '80%' }}>
+            <Box sx={{ width: '90%' }}>
 
             
-            <img src={'home-screen-image.png'}  style={{ width: '80%', height: 'auto' }} alt="home screen image showing history text book, blue mouse, and storyboard" />
+            <img src={'home-screen-image.png'}  style={{ width: '100%', height: 'auto' }} alt="home screen image showing history text book, blue mouse, and storyboard" />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <Button
