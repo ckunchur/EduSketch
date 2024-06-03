@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { captions_json_prompt } from './prompts.js';
+import { captions_json_prompt, storyboard_title } from './prompts.js';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
 import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
@@ -39,6 +39,10 @@ export const getTextFromPDF = async (file) => {
   }
 };
 
+const parseResponse = (response) => {
+  return response.split('\n').map(line => line.replace(/^- /, '').trim()).filter(line => line.length > 0);
+};
+
 export const simplifyTopicsWithChatGPT = async (text, grade_level, num_captions) => {
   console.log("grade level", grade_level);
   console.log("num_captions", num_captions);
@@ -75,6 +79,40 @@ export const simplifyTopicsWithChatGPT = async (text, grade_level, num_captions)
     return { success: false, msg: err.message };
   }
 };
+
+export const createTitle = async (text, ) => {
+  let prompt = storyboard_title + text;
+  try {
+    const res = await client.post(chatgptUrl, {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: 'system',
+          content: prompt
+        },
+        {
+          role: 'user',
+          content: text
+        }
+      ]
+    });
+
+    let answerString = res.data.choices[0].message.content.trim();
+    let imageCaptions;
+    try {
+      imageCaptions = parseResponse(answerString);
+    } catch (jsonError) {
+      console.log('Invalid response:', jsonError);
+      return Promise.resolve({ success: false, msg: 'Invalid response from OpenAI' });
+    }
+
+    return Promise.resolve({ success: true, data: imageCaptions });
+  } catch (err) {
+    console.log('error: ', err);
+    return Promise.resolve({ success: false, msg: err.message });
+  }
+};
+
 
 export const imageGenApiCall = async (captions, style) => {
   const imageUrls = [];
