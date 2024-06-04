@@ -30,16 +30,14 @@ export default function SlideView({ imageObjects }) {
   return (
     <div>
       
-      <Box sx={{ position: 'absolute', top: 200, right: 56, padding: '8px' }}>
-        <Typography variant="h5">
-          Part {currentSlide + 1} of {imageObjects.length}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', marginTop: '50px' }}>
-        <Button onClick={handlePrev} sx={{ color: 'black', fontSize: '48px' }} disabled={currentSlide === 0}>
+      <Box sx={{ display: 'flex',  marginTop: '50px' }}>
+        <Button onClick={handlePrev} sx={{ color: 'black', fontSize: '96px' }} disabled={currentSlide === 0}>
           <KeyboardArrowLeftIcon fontSize="inherit" />
         </Button>
         <Card sx={{ cursor: 'pointer', height: '600px', width: '800px' }} onClick={handleFlip}>
+        <Typography variant="h5" >
+          Part {currentSlide + 1} of {imageObjects.length}
+        </Typography>
           {flipped[currentSlide] ? (
             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '95%' }}>
               <LightbulbCircleIcon sx={{ marginBottom: '8px', fontSize: '48px' }} />
@@ -59,7 +57,7 @@ export default function SlideView({ imageObjects }) {
         <Button
           onClick={handleNext}
           disabled={currentSlide === imageObjects.length - 1}
-          sx={{ color: 'black', fontSize: '48px' }}
+          sx={{ color: 'black', fontSize: '96px' }}
         >
           <KeyboardArrowRightIcon fontSize="inherit" />
         </Button>
@@ -69,6 +67,7 @@ export default function SlideView({ imageObjects }) {
           {imageObjects[currentSlide].caption}
         </Typography>
       </Box>
+    
       
  
     </div>

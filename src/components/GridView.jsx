@@ -74,7 +74,7 @@ export default function GridView({ imageObjects }) {
                                     <>
                                         <CardMedia
                                             component="img"
-                                            height="180"
+                                            height="220"
                                             image={image.src}
                                             alt={image.caption}
                                             sx={{

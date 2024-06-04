@@ -47,7 +47,7 @@ const parseResponse = (response) => {
 export const simplifyTopicsWithChatGPT = async (text, grade_level, num_captions) => {
   console.log("grade level", grade_level);
   console.log("num_captions", num_captions);
-  let prompt = `Using the passed in text, create a summary that consists of ${num_captions} caption pairs that do a good job of covering the main ideas of the information. The captions should be at a ${grade_level} grade reading level.` + captions_json_prompt + "Context:" + text;
+  let prompt = "Context:" + text + `\n` + `Using the prior passed in text, create a summarized story in the form of ${num_captions} caption pairs that cover the main ideas of the information. The captions should be understandable by a student in grade ${grade_level}` + `\n` + captions_json_prompt;
   try {
     const res = await client.post(chatgptUrl, {
       model: "gpt-4o",
