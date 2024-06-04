@@ -18,6 +18,7 @@ export default function ViewSwitcher() {
     const [dataFetched, setDataFetched] = useState(false);
     const [gridView, setGridView] = useState(true);
     const [title, setTitle] = useState("Welcome to Your Storyboard!");
+    console.log("title in swithcer", title)
     useEffect(() => {
         if (!dataFetched || imageObjects.length === 0) {
             const fetchData = async () => {
@@ -30,8 +31,10 @@ export default function ViewSwitcher() {
 
                     const titleResponse = await createTitle(text);
                     if (!titleResponse.success) throw new Error(titleResponse.msg);
-                    const generatedTitle = titleResponse.data; 
+                    let generatedTitle = titleResponse.data; 
+                    generatedTitle = generatedTitle.slice(1, -1);
 
+            
                     const imageResponse = await imageGenApiCall(initialCaptions, artDescription);
                     if (!imageResponse.success) throw new Error(imageResponse.msg);
 

@@ -3,6 +3,7 @@ import { captions_json_prompt, storyboard_title } from './prompts.js';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
 import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
+
 // const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
 const OPENAI_API_KEY = "sk-proj-q8taqJvSjo1yechfuIFOT3BlbkFJPKjowFC8Wv7hOpicv4gL"
 
@@ -98,15 +99,17 @@ export const createTitle = async (text, ) => {
     });
 
     let answerString = res.data.choices[0].message.content.trim();
-    let imageCaptions;
+    let title;
     try {
-      imageCaptions = parseResponse(answerString);
+      title = parseResponse(answerString)[0];
+      console.log(title)
+
     } catch (jsonError) {
       console.log('Invalid response:', jsonError);
       return Promise.resolve({ success: false, msg: 'Invalid response from OpenAI' });
     }
 
-    return Promise.resolve({ success: true, data: imageCaptions });
+    return Promise.resolve({ success: true, data: title });
   } catch (err) {
     console.log('error: ', err);
     return Promise.resolve({ success: false, msg: err.message });

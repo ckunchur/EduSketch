@@ -12,7 +12,7 @@ export default function LoadingScreen() {
                 Creating Your Storyboard...
             </Typography>
             <Typography variant="h6" mb={2}>
-                Hang tight for a minute! This will take a little bit of time.
+                Hang tight for a little bit! Generation can take 1-2 minutes.
             </Typography>
             <Box
                 sx={{
