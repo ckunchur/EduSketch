@@ -79,8 +79,9 @@ export default function ViewSwitcher() {
                 <Typography variant="h6">
                    View your story below. Click on a picture to learn more! 
                 </Typography>
-                <Box sx={{ display: 'flex' }}>
-                <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8 }}>
+                <Box sx={{ display: 'flex',  }}>
+                    
+                <Stack spacing={2} sx={{ marginLeft: 2, marginRight: 8, }}>
                         <Button
                             variant="contained"
                             onClick={() => setGridView(!gridView)}

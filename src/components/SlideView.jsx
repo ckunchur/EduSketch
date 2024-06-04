@@ -30,7 +30,7 @@ export default function SlideView({ imageObjects }) {
   return (
     <div>
       
-      <Box sx={{ display: 'flex',  marginTop: '50px' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center',  position: 'relative', marginTop: '50px' }}>
         <Button onClick={handlePrev} sx={{ color: 'black', fontSize: '96px' }} disabled={currentSlide === 0}>
           <KeyboardArrowLeftIcon fontSize="inherit" />
         </Button>
