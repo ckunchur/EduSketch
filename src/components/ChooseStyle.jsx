@@ -145,7 +145,7 @@ export default function ChooseStyle() {
                     type="number"
                     value={numCaptions}
                     onChange={handleNumCaptionsChange}
-                    inputProps={{ min: 1, max: 8 }}
+                    inputProps={{ min: 1, max: 20 }}
                     sx={{ width: '30%' }}
                 />
             </Box>
