@@ -1,5 +1,5 @@
 export const captions_json_prompt = "Instructions: \
-The caption pairs should have one that is a short single sentence description and the second should be a more detailed 1-2 sentences expand on the first caption. \
+The caption pairs should have one shorter version that is a detailed 2 sentence description and the second should be a more detailed 3-4 sentences expansion on the first caption from the reading. \
 \
 Output: format the output as ***solely JSON list*** of caption pair objects like this:\
 \
