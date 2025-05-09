@@ -5,7 +5,7 @@ import 'pdfjs-dist/build/pdf.worker.min.mjs';
 
 
 // const OPENAI_API_KEY = process.env.REACT_OPENAI_API_KEY;
-const OPENAI_API_KEY = "sk-proj-q8taqJvSjo1yechfuIFOT3BlbkFJPKjowFC8Wv7hOpicv4gL"
+// const OPENAI_API_KEY = "sk-proj-q8taqJvSjo1yechfuIFOT3BlbkFJPKjowFC8Wv7hOpicv4gL" // key disabled
 
 const client = axios.create({
   baseURL: 'https://api.openai.com/v1',
