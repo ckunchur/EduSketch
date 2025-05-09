@@ -1,6 +1,6 @@
 # EduSketch
 
-View demo video [here](https://drive.google.com/file/d/1tXJsYtMeqqnSWwWHZDphrpE2EyAlwdsZ/view?usp=sharing)
+View demo video [here](https://drive.google.com/file/d/1tXJsYtMeqqnSWwWHZDphrpE2EyAlwdsZ/view?usp=sharing).
 
 ## Quick Start
 ### Live Site
